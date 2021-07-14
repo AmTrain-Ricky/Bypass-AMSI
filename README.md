@@ -11,6 +11,13 @@ Bypassing AMSI
 ---
 The first major hurdle is bypassing AMSI, or Antimalware Scan Interface. After trying to run some of the powershell tools, you'll quickly notice they can't run because they "contain malware".
 
-<pre style="background-color: blue">
-lol
-</pre>
+```diff
+Import-Module .\PowerSploit.psd1
+-This script contains malicious content and has been blocked by your antivirus software.
+```
+
+The way we can bypass this is a little weird (but works). We're going to compile a C file into a DLL, then load that into powershell. This part of bypassing AMSI was found on [this website](https://www.citadel.co.il/Home/Blog/1008) which took a long time to find!
+
+If you want, you can just download the DLL from this repository and skip to [here](/#load-dll)
+
+Now, you can [load the DLL into powershell](#load-dll)
