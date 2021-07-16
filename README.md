@@ -82,7 +82,25 @@ This with create a file called AMSI.dll.
 Now you should have the DLL called `AMSI.dll`. We need to load this into powershell to get around AMSI.
 
 To do this, type:
-`[Reflection.Assembly]::Load([IO.File]::ReadAllBytes("$pwd\AMSI.dll"))`
+```
+[Reflection.Assembly]::Load([IO.File]::ReadAllBytes("$pwd\AMSI.dll"))
+```
 
 Then, the final step is to patch the memory:
-`[BP.AMS]::Disable()`
+```
+[BP.AMS]::Disable()
+```
+
+Now you should be able to run whatever you want in powershell!
+
+Getting Local Admin
+---
+The next thing you need is local admin. For this, we can exploit the unquoted service path.
+
+### What is Unquoted Service Path?
+The unquoted service path is a path to a file that is unquoted!
+
+Look at this path: `C:\Users\Marty McFly\run.exe`
+
+There is a space in between Marty and Mcfly, and that path is not quoted.
+Windows will look for run.exe, but since the path isn't quoted, it goes through the path and looks for files to run. It will end up stopping at Marty (thinking there is a file at _C:\Users_. It will run any file named Marty, and if there is no file, it moves on. Luckily, Windows runs this file with the highest privligas. We can put a file in the unquoted service path to run a payload.
