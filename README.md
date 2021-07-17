@@ -162,4 +162,17 @@ You should be able to navigate through and download the EXE to your computer.
     
 (It might be better to watch [the video?](https://youtu.be/WWE7VIpgd5I?t=516))
     
-When you have it on your computer, extract this into a ZIP file. On Windows, right click and choose _Send to Compressed (Zipped) Folder_. On Mac and Linux, Right Click and choose _Compress_. You can copy this to the Pwn Twn lab by copying and pasting it (most RDP clients have shared clipboards).
+When you have it on your computer, extract this into a ZIP file. I had a lot of trouble with transferring EXEs, so a ZIP works perfectly. On Windows, right click and choose _Send to Compressed (Zipped) Folder_. On Mac and Linux, Right Click and choose _Compress_. You can copy this to the Pwn Twn lab by copying and pasting it (most RDP clients have shared clipboards).
+    
+### Running the Payload
+If you remember from earlier, we can run a payload from a space in the unquoted service path.
+```
+C:\Program Files\Pwn Town\Pwn Agent\agent.exe
+                   ^
+```
+In this case, it will be located in `C:\Program Files\` and will be called `Pwn.exe`.
+
+The first step to running the payload is extracting the ZIP file. Make sure you do this into the `pentest-tools` folder because this is whitelisted in Windows Defender and will not be deleted. (To extract on Windows, just right click and press _Extract All_).
+    
+Now, you can open a new windows of file explorer and navigate to `C:\Program Files`. Copy and Paste (or drag and drop) the Pwn file from pentest-tools to Program Files. Quickly reboot the machine after doing this to prevent Windows Defender from deleting the files.
+
