@@ -176,3 +176,15 @@ The first step to running the payload is extracting the ZIP file. Make sure you 
     
 Now, you can open a new windows of file explorer and navigate to `C:\Program Files`. Copy and Paste (or drag and drop) the Pwn file from pentest-tools to Program Files. Quickly reboot the machine after doing this to prevent Windows Defender from deleting the files.
 
+### Logging In to the New Admin Account
+Logging in to the admin account is similar to the student account. in your RDP client, change the username to `localhost/backdoor_admin`.
+
+![Image showing RDP client with backdoor_admin as the username](https://user-images.githubusercontent.com/52871476/126045593-e999ae9c-82f3-4f6d-bb83-02e04885c6c9.png)
+
+Go ahead and connect using the password that you created earlier.
+
+Now you have an admin account!
+
+### Elevating student account
+Now you can elevate your student account. Do this by going to Settings > Accounts > Family & Other Users (in the admin account), then click on the student account. Click "Change Account Type" and choose Administrator.
+
